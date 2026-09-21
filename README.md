@@ -33,10 +33,15 @@ flowchart TD
     P1 ~~~ P2
 ```
 
+The diagram above shows the file-level pipeline; this one shows what's actually happening inside `model.py` on a single image, how a 28x28 input shrinks spatially (28→14→7→3) while growing in channel depth (1→32→64→128) through the three conv+pool blocks, then flattens into a vector that two fully connected layers reduce to 95 class scores:
+
+![CNN architecture](assets/cnn_architecture.png)
+
 ## Project structure
 
 ```
 Japanese Handwriting Recognition/
+├── assets/                             (hand-made diagrams referenced in this README)
 ├── data/                              (downloaded datasets — not committed, see Setup)
 │   ├── kaggle_hiragana/                   46 folders, one per hiragana character
 │   └── kuzushiji_kanji/kkanji2/            49 folders, one per kanji character
@@ -170,7 +175,7 @@ Many of the model's actual mistakes are on genuinely ambiguous input. Several of
 
 For each of the 8,995 test images, this is the model's own confidence (softmax probability) in its top prediction. The y-axis uses a log scale since on a linear scale, the images near 100% confidence would completely dwarf everything else, hiding the small tail of harder cases entirely. That tail is the point: a handful of images get confidence as low as ~20-40%, and those are almost certainly the same ambiguous cases shown above, not random noise.
 
-The last bin alone (confidence near 100%) contains 8,690 of the 8,995 images, over 96% of all test images fall into this single highest-confidence tier.
+The last bin alone (confidence near 100%) contains 8,690 of the 8,995 images — over 96% of all test images fall into this single highest-confidence tier.
 
 ### Sample predictions
 
